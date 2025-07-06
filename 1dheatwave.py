@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 
 # Define the basics of the rod 
 
-h = 258                             # heat diffusivity
-length = 100                        #length of the rode
-nodes = 30                          # imagine a discrete rod
+h = 258                                                                   # heat diffusivity
+length = 100                                                              #length of the rode
+nodes = 30                                                                # imagine a discrete rod
 time = 10  
-dx = length / nodes                 #smaller dt, better precision
-dt = 0.5 * dx**2 / h                # formula from stability analysis of FDS
-t_nodes = int(time / dt)            #initialoze rod
+dx = length / nodes                                                       #smaller dt, better precision
+dt = 0.5 * dx**2 / h                                                      # formula from stability analysis of FDS
+t_nodes = int(time / dt)                                                  #initialize rod
 
-u = np.zeros(nodes) + 20            #assuming that the rod is initially at 20 degrees
+u = np.zeros(nodes) + 20                                                  #assuming that the rod is initially at 20 degrees
 
 # Defining the first and the last element (Dirichlet b.c)
 u[0] = 100
