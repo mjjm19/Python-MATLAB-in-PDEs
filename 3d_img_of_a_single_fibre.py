@@ -1,3 +1,6 @@
+#In this project, I created a single fibre model visualization using python. 
+#The 3D fiber shown is being extruded from a nozzle during a fibre melt-blowing process based on the 250 csv data files that was provided.
+
 import pandas as pd
 import plotly.express as px
 
