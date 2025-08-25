@@ -1,4 +1,4 @@
-% Jeffcott Rotor: Bode, Orbit, Run-up
+% Jeffcott Rotor: Bode, Orbit, Transient response
 % I used simplified anisotrophy model (different kx ky) to capture the basic effect on 
 orbit shape. 
 % This code implements a Jeffcott rotor model to study the funadamental rotor dynamic behavior. 
@@ -7,7 +7,8 @@ orbit shape.
 
 clear; clc; close all;
 
-% ---- Parameters ----
+% Parameters 
+
 m = 5.0;                 % kg
 fn = 100;                % target natural freq [Hz]
 k = (2*pi*fn)^2 * m;     % N/m
@@ -16,7 +17,8 @@ c = 2*zeta*sqrt(k*m);    % N s/m
 e = 5e-4;                % m (eccentricity)
 rpm2rad = 2*pi/60;
 
-% ---- 1) Bode via steady-state ODE (numerical) ----
+% Bode via steady-state ODE
+
 rpms = linspace(300,9000,120);
 Apeak = zeros(size(rpms));
 
@@ -35,7 +37,8 @@ for i=1:numel(rpms)
     Apeak(i) = max(amp(end-round(0.3*length(amp)):end));
 end
 
-% Detect critical speed (peak)
+% Detecting critical speed (peak)
+
 [~,idx] = max(Apeak); crit_rpm = rpms(idx);
 
 figure; plot(rpms, Apeak, 'LineWidth',1.5);
@@ -44,7 +47,8 @@ xlabel('Speed [rpm]'); ylabel('Amplitude [m]');
 title('Bode (peak amplitude vs speed)');
 grid on;
 
-% ---- 2) Orbit at selected speed ----
+% Orbit at selected speed
+
 rpm_view = crit_rpm;    % try below/near/above
 om = rpm_view*rpm2rad;
 f = @(t,X)[ X(2);
@@ -59,7 +63,8 @@ figure; plot(x,y,'LineWidth',1.5); axis equal; grid on;
 xlabel('x [m]'); ylabel('y [m]');
 title(sprintf('Orbit at %.0f rpm', rpm_view));
 
-% ---- 3) Bearing effects (anisotropic) ----
+% Bearing effects (anisotropic)
+
 kx = 1.2*k; ky = 0.8*k; cx = c; cy = c;  % simplified anisotropy
 om = crit_rpm*rpm2rad;
 f_aniso = @(t,X)[ X(2);
@@ -73,7 +78,8 @@ figure; plot(xa,ya,'LineWidth',1.5); axis equal; grid on;
 xlabel('x [m]'); ylabel('y [m]');
 title('Orbit with anisotropic bearings (k_x ≠ k_y)');
 
-% ---- 4) Optional: run-up transient ----
+% Transient response 
+
 tend = 6; om0 = 300*rpm2rad; om1 = 9000*rpm2rad;
 om_t = @(t) om0 + (om1-om0)*t/tend;
 fr = @(t,X)[ X(2);
