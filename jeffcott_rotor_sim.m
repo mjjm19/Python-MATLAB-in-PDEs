@@ -1,4 +1,10 @@
-% Jeffcott Rotor: Bode, Orbit, Run-up (MATLAB)
+% Jeffcott Rotor: Bode, Orbit, Run-up
+% I used simplified anisotrophy model (different kx ky) to capture the basic effect on 
+orbit shape. 
+% This code implements a Jeffcott rotor model to study the funadamental rotor dynamic behavior. 
+% Using Runge-Kutta ODE solver (ODE45) we capture critical speed resonance, orbit motion, anisotropic ebaring effects and transient run-up response.
+
+
 clear; clc; close all;
 
 % ---- Parameters ----
@@ -6,7 +12,7 @@ m = 5.0;                 % kg
 fn = 100;                % target natural freq [Hz]
 k = (2*pi*fn)^2 * m;     % N/m
 zeta = 0.02;             % damping ratio
-c = 2*zeta*sqrt(k*m);    % N·s/m
+c = 2*zeta*sqrt(k*m);    % N s/m
 e = 5e-4;                % m (eccentricity)
 rpm2rad = 2*pi/60;
 
@@ -54,7 +60,7 @@ xlabel('x [m]'); ylabel('y [m]');
 title(sprintf('Orbit at %.0f rpm', rpm_view));
 
 % ---- 3) Bearing effects (anisotropic) ----
-kx = 1.2*k; ky = 0.8*k; cx = c; cy = c;  % simple anisotropy
+kx = 1.2*k; ky = 0.8*k; cx = c; cy = c;  % simplified anisotropy
 om = crit_rpm*rpm2rad;
 f_aniso = @(t,X)[ X(2);
                   (m*e*om^2*cos(om*t) - cx*X(2) - kx*X(1))/m;
